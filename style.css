@@ -1,5 +1,10 @@
 /*Global ================== */
 :root {
+	--color-primary: #8257e5;
+    --color-primary-border: #6833e4;
+    --color-primary-hover: #9466ff;
+    --color-secondary: #e1e1e6;
+    --color-text: #a8a8b3;
 	--dark-blue: #363f5f;
 	--green: #49AA26;
 	--light-green:#3dd705;
@@ -285,8 +290,16 @@ input {
 	width: 48%;
 }
 /*Footer ================== */
+footer{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
 
-footer {
+footer p{
+	display: flex;
+
 	text-align: center;
 	padding: 4rem 0 2rem;
 	color: var(--dark-blue);

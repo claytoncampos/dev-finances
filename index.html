@@ -25,7 +25,7 @@
 					</span>
 					<img src="./assets/income.svg" alt="image de entradas">
 				</h3>
-				<p>R$5.000</p>
+				<p id="incomeDisplay">R$5.000</p>
 			</div>
 
 			<div class="card">
@@ -35,7 +35,7 @@
 					</span>
 					<img src="./assets/expense.svg" alt="image de saidas">
 				</h3>
-				<p>R$2.000</p>
+				<p id="expenseDisplay">R$2.000</p>
 			</div>
 
 			<div class="card total">
@@ -45,7 +45,7 @@
 					</span>
 					<img src="./assets/total.svg" alt="image de total">
 				</h3>
-				<p>R$3.000</p>
+				<p id="totalDisplay">R$3.000</p>
 				
 			</div>
 		</section>
@@ -55,7 +55,7 @@
 
 			<a href="#" 
 			class="button new"
-			onclick="Modal.open()">+ Nova Transação</a>
+			onclick="activeModal()">+ Nova Transação</a>
 			<table id="data-table">
 				<thead>
 					<tr>
@@ -66,30 +66,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="description">Luz</td>
-						<td class="expense">- R$500.00</td>
-						<td class="date">23/01/2021</td>
-						<td>
-							<img src="./assets/minus.svg">
-						</td>
-					</tr>
-					<tr>
-						<td class="description">Criação Web Site</td>
-						<td class="income"> R$5000.00</td>
-						<td class="date">23/01/2021</td>
-						<td>
-							<img src="./assets/minus.svg">
-						</td>
-					</tr>
-					<tr>
-						<td class="description">Internet</td>
-						<td class="expense">- R$200.00</td>
-						<td class="date">23/01/2021</td>
-						<td>
-							<img src="./assets/minus.svg">
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</section>
@@ -138,7 +114,7 @@
 					</div>
 
 					<div class="input-group actions">
-						<a class="button cancel" href="#" onclick="Modal.close()">Cancelar</a>
+						<a class="button cancel" href="#" onclick="activeModal()">Cancelar</a>
 						<button>Salvar</button>
 					</div>
 				</form>
@@ -148,25 +124,11 @@
 
 
 	<footer>
-		<p>dev.finance$</p>
+		<p>Dev.Finance$</p>
+		<img src="./assets/maratona.png">
 	</footer>
 
-	<script type="text/javascript">
-		const Modal ={
-			open(){
-				//Abrir Modal
-				//Adicionar a class active ao modal
-				document.querySelector('.modal-overlay').classList.add('active')
-
-			},
-			close(){
-				//Fechar o modal
-				//Remover a class active ao modal
-				document.querySelector('.modal-overlay').classList.remove('active')
-
-			}
-		}
-	</script>	
+	<script src="./script.js"></script>	
 </body>
 </html>
 
