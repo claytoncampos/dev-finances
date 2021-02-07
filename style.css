@@ -106,6 +106,12 @@ button:hover {
   opacity: 0.6;
 }
 
+button.darkMode {
+  background: none;
+  background-image: url(./assets/alternancia.png);
+  width: 32px;
+  height: 28px;
+}
 /* Header ==================*/
 header {
   background: #2d4a22;
@@ -158,7 +164,9 @@ header {
   background: var(--green);
   color: #fff;
 }
-
+.card.total.negative {
+  background: #e8473f;
+}
 /*Table ================== */
 #transaction {
   display: block;
@@ -213,6 +221,10 @@ td.income {
 td.expense {
   color: #e92929;
 }
+
+td img {
+  cursor: pointer;
+}
 /* Modal ================== */
 .modal-overlay {
   width: 100%;
@@ -263,8 +275,14 @@ input {
   margin-top: 0.8rem;
 }
 
+input#amount {
+  margin-bottom: 5px;
+}
 .input-group small {
   opacity: 0.4;
+}
+input:focus {
+  border: solid 1px #749985;
 }
 
 .input-group.actions {
@@ -297,7 +315,9 @@ footer p {
   opacity: 0.6;
   text-align: center;
 }
-
+footer img {
+  opacity: 0.8;
+}
 /* Responsive ================== */
 
 @media (min-width: 800px) {

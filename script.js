@@ -1,18 +1,24 @@
 //seletores//
 const modal = document.querySelector('.modal-overlay');
 
-/*criando uma função toggle
-function toggleModal(){
-	if(modal.classList.contains('active')){
-		modal.classList.remove('active')
-	}else{
-		modal.classList.add('active')
-	}
-}
-*/
-
 //arrow function c/ toggle modal
 const openAndCloseModal = () => modal.classList.toggle('active');
+
+const updateBackGround = document.querySelector('.card.total');
+const update = () => updateBackGround.classList.toggle('negative');
+
+const Storage = {
+  get() {
+    return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
+  },
+
+  set(transactions) {
+    localStorage.setItem(
+      'dev.finances:transactions',
+      JSON.stringify(transactions)
+    );
+  },
+};
 
 /*transacoes simbolicas
 const transactions = [
@@ -34,7 +40,8 @@ const transactions = [
 ];
 */
 const Transaction = {
-  all: [
+  all: Storage.get(),
+  /* objeto exmplo[
     {
       description: 'Luz',
       amount: -50000,
@@ -50,7 +57,7 @@ const Transaction = {
       amount: -20000,
       date: '03/02/2021',
     },
-  ],
+  ]*/
 
   add(transaction) {
     Transaction.all.push(transaction);
@@ -88,7 +95,12 @@ const Transaction = {
 
   total() {
     // entradas - saidas
-    return Transaction.incomes() + Transaction.expenses();
+    const totalTransactions = Transaction.incomes() + Transaction.expenses();
+
+    if (totalTransactions < 0) {
+      Utils.formatTotalBackground();
+    }
+    return totalTransactions;
   },
 };
 
@@ -99,12 +111,13 @@ const DOM = {
 
   addTransaction(transaction, index) {
     const tr = document.createElement('tr');
-    tr.innerHTML = DOM.innerHTMLTransaction(transaction);
+    tr.innerHTML = DOM.innerHTMLTransaction(transaction, index);
+    tr.dataset.index = index;
 
     DOM.transactionsContainer.appendChild(tr);
   },
 
-  innerHTMLTransaction(transaction) {
+  innerHTMLTransaction(transaction, index) {
     const CSSclass = transaction.amount > 0 ? 'income' : 'expense';
 
     const amount = Utils.formatCurrency(transaction.amount);
@@ -114,7 +127,7 @@ const DOM = {
 			<td class="${CSSclass}">${amount}</td>
 			<td class="date">${transaction.date}</td>
 			<td>
-				<img src="./assets/minus.svg">
+				<img onclick="Transaction.remove(${index})" src="./assets/minus.svg">
 			</td>		
 		`;
     return html;
@@ -143,6 +156,7 @@ const Utils = {
     return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
   },
   formatAmount(value) {
+    // value = Number(value.replace(/\,\./g, "")) * 100
     value = Number(value) * 100;
     return value;
   },
@@ -158,6 +172,25 @@ const Utils = {
       currency: 'BRL',
     });
     return signal + value;
+  },
+  formatTotalBackground() {
+    const updateBackGround = document.querySelector('.card.total');
+    update();
+  },
+  darkMode() {
+    const cor = document.querySelector('header');
+    const body = document.querySelector('body');
+    const darkOn = () => {
+      if (cor.style.backgroundColor != 'red') {
+        (cor.style.backgroundColor = 'red') &&
+          (body.style.backgroundColor = 'red');
+      } else {
+        (cor.style.backgroundColor = '#252529') &&
+          (body.style.backgroundColor = '#252529');
+      }
+    };
+
+    darkOn();
   },
 };
 
@@ -230,12 +263,15 @@ const Form = {
 
 const App = {
   init() {
-    Transaction.all.forEach((transaction) => {
-      DOM.addTransaction(transaction);
+    Transaction.all.forEach((transaction, index) => {
+      DOM.addTransaction(transaction, index);
     });
 
     DOM.updateBalance();
+
+    Storage.set(Transaction.all);
   },
+
   reload() {
     DOM.clearTransaction();
     App.init();
