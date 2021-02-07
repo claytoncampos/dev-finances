@@ -12,7 +12,7 @@ function toggleModal(){
 */
 
 //arrow function c/ toggle modal
-const activeModal = () => modal.classList.toggle('active');
+const openAndCloseModal = () => modal.classList.toggle('active');
 
 /*transacoes simbolicas
 const transactions = [
@@ -197,7 +197,7 @@ const Form = {
       date,
     };
   },
-  saveTransaction() {
+  saveTransaction(transaction) {
     Transaction.add(transaction);
   },
   clearFields() {
@@ -215,12 +215,13 @@ const Form = {
       //formatar os dados para salvar
       const transaction = Form.formatValues();
       //salvar
-      saveTransaction();
+      Form.saveTransaction(transaction);
       //limpar formulario
       Form.clearFields();
       //modal feche
-      activeModal();
+      openAndCloseModal();
       //atualizar a aplicação
+      //App.reload();
     } catch (error) {
       alert(error.message);
     }
@@ -242,5 +243,3 @@ const App = {
 };
 
 App.init();
-
-//2h 36
