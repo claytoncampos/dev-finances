@@ -14,42 +14,61 @@ function toggleModal(){
 //arrow function c/ toggle modal
 const activeModal = () => modal.classList.toggle('active');
 
+/*transacoes simbolicas
 const transactions = [
   {
-    id: 1,
     description: 'Luz',
     amount: -50000,
     date: '03/02/2021',
   },
   {
-    id: 2,
     description: 'Website',
     amount: 500000,
     date: '03/02/2021',
   },
   {
-    id: 3,
     description: 'Internet',
     amount: -20000,
     date: '03/02/2021',
   },
 ];
-
+*/
 const Transaction = {
-  all: transactions,
+  all: [
+    {
+      description: 'Luz',
+      amount: -50000,
+      date: '03/02/2021',
+    },
+    {
+      description: 'Website',
+      amount: 500000,
+      date: '03/02/2021',
+    },
+    {
+      description: 'Internet',
+      amount: -20000,
+      date: '03/02/2021',
+    },
+  ],
+
   add(transaction) {
     Transaction.all.push(transaction);
-    console.log(Transaction.all);
+
+    App.reload();
+  },
+
+  remove(index) {
+    Transaction.all.splice(index, 1);
+
+    App.reload();
   },
 
   incomes() {
     let income = 0;
-    //somar as entradas
-    //pegar todas as transacoes
+    //somar as entradas pegar todas as transacoes para cada transacao, se ela for > 0 somar em uma variavel e retornar a variavel
     Transaction.all.forEach((transaction) => {
-      //para cada transacao, se ela for > 0
       if (transaction.amount > 0) {
-        //somar em uma variavel e retornar a variavel
         income += transaction.amount;
       }
     });
@@ -57,13 +76,10 @@ const Transaction = {
   },
 
   expenses() {
-    // somar as saídas
+    // somar as saídas | pegar todas as transacoes | para cada transacao, se ela for < 0 |//somar em uma variavel e retornar a variavel
     let expense = 0;
-    //pegar todas as transacoes
     Transaction.all.forEach((transaction) => {
-      //para cada transacao, se ela for < 0
       if (transaction.amount < 0) {
-        //somar em uma variavel e retornar a variavel
         expense += transaction.amount;
       }
     });
@@ -76,8 +92,7 @@ const Transaction = {
   },
 };
 
-//substituir os dados HTML para os dados JS
-//armazena no objeto transaction
+//substituir os dados HTML para os dados JS | armazenar no objeto transaction
 
 const DOM = {
   transactionsContainer: document.querySelector('#data-table tbody'),
@@ -116,9 +131,21 @@ const DOM = {
       Transaction.total()
     );
   },
+
+  clearTransaction() {
+    DOM.transactionsContainer.innerHTML = '';
+  },
 };
 
 const Utils = {
+  formatDate(date) {
+    const splittedDate = date.split('-');
+    return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
+  },
+  formatAmount(value) {
+    value = Number(value) * 100;
+    return value;
+  },
   formatCurrency(value) {
     const signal = Number(value) < 0 ? '-' : '';
 
@@ -134,17 +161,86 @@ const Utils = {
   },
 };
 
-transactions.forEach((transaction) => {
-  DOM.addTransaction(transaction);
-});
+const Form = {
+  description: document.querySelector('input#description'),
+  amount: document.querySelector('input#amount'),
+  date: document.querySelector('input#date'),
 
-DOM.updateBalance();
+  getValues() {
+    return {
+      description: Form.description.value,
+      amount: Form.amount.value,
+      date: Form.date.value,
+    };
+  },
+  validateFields() {
+    const { description, amount, date } = Form.getValues();
 
-Transaction.add({
-  id: 39,
-  description: 'ola',
-  amount: -500,
-  date: '01/01/2020',
-});
+    if (
+      description.trim() === '' ||
+      amount.trim() === '' ||
+      date.trim() === ''
+    ) {
+      throw new Error('Por favor, preencha todos os campos');
+    }
+  },
+  formatValues() {
+    let { description, amount, date } = Form.getValues();
 
-//1h 40
+    amount = Utils.formatAmount(amount);
+
+    date = Utils.formatDate(date);
+
+    return {
+      description,
+      amount,
+      date,
+    };
+  },
+  saveTransaction() {
+    Transaction.add(transaction);
+  },
+  clearFields() {
+    Form.description.value = '';
+    Form.amount.value = '';
+    Form.date.value = '';
+  },
+
+  submit(event) {
+    event.preventDefault();
+
+    try {
+      //verfiicar se todas as iformaçoes foram preenchidas
+      Form.validateFields();
+      //formatar os dados para salvar
+      const transaction = Form.formatValues();
+      //salvar
+      saveTransaction();
+      //limpar formulario
+      Form.clearFields();
+      //modal feche
+      activeModal();
+      //atualizar a aplicação
+    } catch (error) {
+      alert(error.message);
+    }
+  },
+};
+
+const App = {
+  init() {
+    Transaction.all.forEach((transaction) => {
+      DOM.addTransaction(transaction);
+    });
+
+    DOM.updateBalance();
+  },
+  reload() {
+    DOM.clearTransaction();
+    App.init();
+  },
+};
+
+App.init();
+
+//2h 36
