@@ -4,8 +4,33 @@ const modal = document.querySelector('.modal-overlay');
 //arrow function c/ toggle modal
 const openAndCloseModal = () => modal.classList.toggle('active');
 
-const updateBackGround = document.querySelector('.card.total');
-const update = () => updateBackGround.classList.toggle('negative');
+const Utils = {
+  formatDate(date) {
+    const splittedDate = date.split('-');
+    return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
+  },
+  formatAmount(value) {
+    // value = Number(value.replace(/\,\./g, "")) * 100
+    value = Number(value) * 100;
+    return value;
+  },
+  formatCurrency(value) {
+    const signal = Number(value) < 0 ? '-' : '';
+
+    value = String(value).replace(/\D/g, '');
+
+    value = Number(value) / 100;
+
+    value = value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+    return signal + value;
+  },
+  formatTotalBackground() {
+    update();
+  },
+};
 
 const Storage = {
   get() {
@@ -95,10 +120,14 @@ const Transaction = {
 
   total() {
     // entradas - saidas
-    const totalTransactions = Transaction.incomes() + Transaction.expenses();
+    const fundo = document.querySelector('.card.total');
+    const update = () => fundo.classList.toggle('negative');
 
+    const totalTransactions = Transaction.incomes() + Transaction.expenses();
+    console.log(totalTransactions);
     if (totalTransactions < 0) {
-      Utils.formatTotalBackground();
+      update();
+      return totalTransactions;
     }
     return totalTransactions;
   },
@@ -147,50 +176,6 @@ const DOM = {
 
   clearTransaction() {
     DOM.transactionsContainer.innerHTML = '';
-  },
-};
-
-const Utils = {
-  formatDate(date) {
-    const splittedDate = date.split('-');
-    return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
-  },
-  formatAmount(value) {
-    // value = Number(value.replace(/\,\./g, "")) * 100
-    value = Number(value) * 100;
-    return value;
-  },
-  formatCurrency(value) {
-    const signal = Number(value) < 0 ? '-' : '';
-
-    value = String(value).replace(/\D/g, '');
-
-    value = Number(value) / 100;
-
-    value = value.toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    });
-    return signal + value;
-  },
-  formatTotalBackground() {
-    const updateBackGround = document.querySelector('.card.total');
-    update();
-  },
-  darkMode() {
-    const cor = document.querySelector('header');
-    const body = document.querySelector('body');
-    const darkOn = () => {
-      if (cor.style.backgroundColor != 'red') {
-        (cor.style.backgroundColor = 'red') &&
-          (body.style.backgroundColor = 'red');
-      } else {
-        (cor.style.backgroundColor = '#252529') &&
-          (body.style.backgroundColor = '#252529');
-      }
-    };
-
-    darkOn();
   },
 };
 
@@ -274,8 +259,21 @@ const App = {
 
   reload() {
     DOM.clearTransaction();
+
     App.init();
   },
 };
 
 App.init();
+
+//darkMode
+
+const nightMode = document.querySelector('#switch-shadow');
+
+// ao clicar mudaremos as cores
+nightMode.addEventListener('click', () => {
+  // adiciona a classe `night-mode` ao html
+  document.documentElement.classList.toggle('night-mode');
+  document.querySelector('header').classList.toggle('night-mode');
+  document.querySelector('body').classList.toggle('night-mode');
+});

@@ -42,8 +42,15 @@
   <body>
     <header>
       <img src="./assets/logo.svg" alt="logo dev finance" />
-      <div>
-        <button class="darkMode" onclick="Utils.darkMode()"></button>
+      <div class="switch__container">
+        <input
+          id="switch-shadow"
+          class="switch switch--shadow"
+          type="checkbox"
+          aria-label="night-mode"
+        />
+        <label for="switch-shadow"></label>
+      </div>
       </div>
     </header>
 
@@ -143,6 +150,7 @@
     </div>
 
     <footer>
+      
       <p>Dev.Finance$</p>
       <img src="./assets/maratona.png" />
     </footer>

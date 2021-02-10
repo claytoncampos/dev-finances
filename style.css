@@ -108,9 +108,15 @@ button:hover {
 
 button.darkMode {
   background: none;
-  background-image: url(./assets/alternancia.png);
+
+  background-image: url(./assets/alternancia2.png);
   width: 32px;
   height: 28px;
+}
+
+button.darkMode:hover {
+  background-color: #12a454;
+  background-image: url(./assets/alternancia.png);
 }
 /* Header ==================*/
 header {
@@ -332,6 +338,115 @@ footer img {
   }
 
   footer {
-    margin-top: 150px;
+    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+
+/* darkmode*/
+.night-mode {
+  background: #444;
+}
+
+.switch__container {
+  display: flex;
+  justify-content: center;
+}
+
+/*esconder o checkbox feio e jogá-lo para fora da tela, 
+garantindo assim, que ele não seja clicável.*/
+
+.switch {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+/* Usamos aqui o seletor +, conhecido como adjacente, 
+que pega o primeiro elemento após o primeiro seletor+*/
+
+/*responsáveis por deixar o elemento ali "clicável"
+ usando a propriedade cursor: pointer, também remove a opção 
+ de selecionar a label com o user-select: none e deixa ele como um elemento de bloco, 
+para que possamos botar tamanho e estilo.*/
+
+.switch + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+/*qui, nossa label será o elemento principal para criação 
+do desenho. Primeiro, vamos definir um tamanho para ela,
+ uma cor e também esse aspecto arredondado.
+ 
+ Com esse primeiro passo, teremos nada mais que um retângulo 
+ com as bordas completamente arredondadas, num fundo cinza.*/
+
+.switch--shadow + label {
+  padding: 2px;
+  width: 60px;
+  height: 30px;
+  background-color: #dddddd;
+  border-radius: 60px;
+}
+
+/*Depois, na própria label, iremos utilizar o seletor :before, 
+ai ser responsável por fazer a transição entre o cinza e o 
+fundo verde. E vamos usar o seletor :after para criar a bolinha,
+ que irá de um lado para o outro.*/
+
+/*as primeiras propriedades que são em conjunto para o 
+:before e para o :after, servem para definir conteúdo para 
+os mesmos, para que assim, possamos manipular.
+
+Preste atenção, que eu coloco transition: all 0.4s para o 
+before e o after, para que ocorra a transição suave, entre o estado de ON para o estado de OFF e vice-versa.
+
+Com esses estilos, nós já temos o nosso botão prontinho, 
+só falta criar a interação.*/
+
+.switch--shadow + label:before,
+.switch--shadow + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: '';
+}
+.switch--shadow + label:before {
+  right: 1px;
+  background-color: #f1f1f1;
+  border-radius: 60px;
+  transition: all 0.4s;
+}
+/*bolinha*/
+.switch--shadow + label:after {
+  width: 32px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s;
+}
+
+/* Criando interação com clique no CSS
+
+Esse é um truque bem legal e que serve para muitas coisas, 
+existe um seletor no css, chamado :checked, que verifica se 
+o input foi marcado ou não. Com isso em mãos, podemos fazer a seguinte regra:
+
+Verificando se o input foi marcado e caso tenha sido,
+ mudar a cor e também mover a bolinha para o lado.
+*/
+
+.switch--shadow:checked + label:before {
+  background-color: #8ce196;
+}
+.switch--shadow:checked + label:after {
+  transform: translateX(30px);
 }
