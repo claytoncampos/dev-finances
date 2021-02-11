@@ -1,9 +1,19 @@
 //seletores//
 const modal = document.querySelector('.modal-overlay');
+const nightMode = document.querySelector('#switch-shadow');
 
-//arrow function c/ toggle modal
-const openAndCloseModal = () => modal.classList.toggle('active');
+//darkMode
+nightMode.addEventListener('click', () => {
+  // adiciona a classe `night-mode` ao html
+  document.documentElement.classList.toggle('night-mode');
+  document.querySelector('header').classList.toggle('night-mode');
+  document.querySelector('body').classList.toggle('night-mode');
+});
 
+//Modal
+const isOpenModal = () => modal.classList.toggle('active');
+
+//----------Utilizadades - Formatadores -------
 const Utils = {
   formatDate(date) {
     const splittedDate = date.split('-');
@@ -15,23 +25,35 @@ const Utils = {
     return value;
   },
   formatCurrency(value) {
+    const fundo = document.querySelector('.card.total');
+    const update = () => fundo.classList.toggle('negative')
     const signal = Number(value) < 0 ? '-' : '';
 
     value = String(value).replace(/\D/g, '');
 
     value = Number(value) / 100;
-
+   
     value = value.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    });
+    }); 
+    
     return signal + value;
+
   },
-  formatTotalBackground() {
+  formatDisplayColor(){
+  const cardTotal = document.querySelector('.card.total')
+   const valorCardTotal = document.querySelector('#totalDisplay').textContent;
+   console.log(valorCardTotal)
+   if(valorCardTotal.indexOf('-')> -1){
+    cardTotal.classList.toggle('negative')}
+  },
+  formatBackground() {
     update();
   },
 };
 
+//---------LocalStorage--------
 const Storage = {
   get() {
     return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
@@ -64,6 +86,8 @@ const transactions = [
   },
 ];
 */
+
+//------------Transações--------
 const Transaction = {
   all: Storage.get(),
   /* objeto exmplo[
@@ -120,20 +144,17 @@ const Transaction = {
 
   total() {
     // entradas - saidas
-    const fundo = document.querySelector('.card.total');
-    const update = () => fundo.classList.toggle('negative');
 
     const totalTransactions = Transaction.incomes() + Transaction.expenses();
     console.log(totalTransactions);
-    if (totalTransactions < 0) {
-      update();
+   
+    
       return totalTransactions;
-    }
-    return totalTransactions;
+    
   },
 };
 
-//substituir os dados HTML para os dados JS | armazenar no objeto transaction
+//-------DOM ------------
 
 const DOM = {
   transactionsContainer: document.querySelector('#data-table tbody'),
@@ -156,7 +177,7 @@ const DOM = {
 			<td class="${CSSclass}">${amount}</td>
 			<td class="date">${transaction.date}</td>
 			<td>
-				<img onclick="Transaction.remove(${index})" src="./assets/minus.svg">
+				<img  class="glow" onclick="Transaction.remove(${index})" src="./assets/minus.svg">
 			</td>		
 		`;
     return html;
@@ -171,7 +192,10 @@ const DOM = {
     );
     document.getElementById('totalDisplay').innerHTML = Utils.formatCurrency(
       Transaction.total()
+
     );
+    Utils.formatDisplayColor()
+   
   },
 
   clearTransaction() {
@@ -179,6 +203,7 @@ const DOM = {
   },
 };
 
+//------Form ------------
 const Form = {
   description: document.querySelector('input#description'),
   amount: document.querySelector('input#amount'),
@@ -237,7 +262,7 @@ const Form = {
       //limpar formulario
       Form.clearFields();
       //modal feche
-      openAndCloseModal();
+      isOpenModal();
       //atualizar a aplicação
       //App.reload();
     } catch (error) {
@@ -246,34 +271,32 @@ const Form = {
   },
 };
 
+//--------App ----------
 const App = {
   init() {
+
+
+
     Transaction.all.forEach((transaction, index) => {
       DOM.addTransaction(transaction, index);
     });
 
     DOM.updateBalance();
 
+
     Storage.set(Transaction.all);
   },
 
   reload() {
     DOM.clearTransaction();
-
+    Utils.formatDisplayColor()
     App.init();
   },
 };
 
+//-----init----------
 App.init();
 
-//darkMode
 
-const nightMode = document.querySelector('#switch-shadow');
 
-// ao clicar mudaremos as cores
-nightMode.addEventListener('click', () => {
-  // adiciona a classe `night-mode` ao html
-  document.documentElement.classList.toggle('night-mode');
-  document.querySelector('header').classList.toggle('night-mode');
-  document.querySelector('body').classList.toggle('night-mode');
-});
+

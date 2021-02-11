@@ -6,7 +6,6 @@
     <title>dev.finance$</title>
 
     <link rel="stylesheet" type="text/css" href="./style.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,700;1,200;1,400&display=swap"
       rel="stylesheet"
@@ -29,7 +28,6 @@
       sizes="16x16"
       href="./assets/favicon//favicon-16x16.png"
     />
-    <link rel="manifest" href="./assets/favicon//site.webmanifest" />
     <link
       rel="mask-icon"
       href="./assets/favicon//safari-pinned-tab.svg"
@@ -55,7 +53,7 @@
     </header>
 
     <main class="container">
-      <section id="balance">
+      <section id="balance" >
         <h2 class="sr-only">Balanço</h2>
 
         <div class="card">
@@ -86,12 +84,12 @@
       <section id="transaction">
         <h2 class="sr-only">Transações</h2>
 
-        <a href="#" class="button new" onclick="openAndCloseModal()"
+        <a href="#" class="button new" onclick="isOpenModal()"
           >+ Nova Transação</a
         >
         <table id="data-table">
           <thead>
-            <tr>
+            <tr >
               <th>Descrição</th>
               <th>Valor</th>
               <th>Data</th>
@@ -139,7 +137,7 @@
             </div>
 
             <div class="input-group actions">
-              <a class="button cancel" href="#" onclick="openAndCloseModal()"
+              <a class="button cancel" href="#" onclick="isOpenModal()"
                 >Cancelar</a
               >
               <button>Salvar</button>
@@ -149,8 +147,7 @@
       </div>
     </div>
 
-    <footer>
-      
+    <footer>     
       <p>Dev.Finance$</p>
       <img src="./assets/maratona.png" />
     </footer>

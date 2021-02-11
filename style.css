@@ -9,6 +9,7 @@
   --green: #49aa26;
   --light-green: #3dd705;
   --red: #e92929;
+  --dark-mode: #000;
 }
 
 * {
@@ -106,18 +107,13 @@ button:hover {
   opacity: 0.6;
 }
 
-button.darkMode {
-  background: none;
+/*efeito glow button delete*/
+.glow:hover, .glow:focus, .glow:active {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+  border-radius: 50%;
+  background: white;
+} 
 
-  background-image: url(./assets/alternancia2.png);
-  width: 32px;
-  height: 28px;
-}
-
-button.darkMode:hover {
-  background-color: #12a454;
-  background-image: url(./assets/alternancia.png);
-}
 /* Header ==================*/
 header {
   background: #2d4a22;
@@ -251,6 +247,7 @@ td img {
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
+ 
 }
 
 .modal {
@@ -303,12 +300,13 @@ input:focus {
 }
 /*Footer ================== */
 footer {
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   bottom: 0;
-  position: relative;
+  z-index: -99999;
 }
 
 footer p {
@@ -320,6 +318,7 @@ footer p {
 
   opacity: 0.6;
   text-align: center;
+  z-index: -99999;
 }
 footer img {
   opacity: 0.8;
@@ -342,15 +341,19 @@ footer img {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: -99999
   }
+ 
 }
 
 /* darkmode*/
 .night-mode {
-  background: #444;
+  background: var(--dark-mode);
+  transition: 1s;
 }
 
 .switch__container {
+  margin-top: 10px;
   display: flex;
   justify-content: center;
 }
@@ -422,7 +425,7 @@ só falta criar a interação.*/
 .switch--shadow + label:before {
   right: 1px;
   background-color: #f1f1f1;
-  border-radius: 60px;
+  border-radius: 30px;
   transition: all 0.4s;
 }
 /*bolinha*/
@@ -450,3 +453,4 @@ Verificando se o input foi marcado e caso tenha sido,
 .switch--shadow:checked + label:after {
   transform: translateX(30px);
 }
+
