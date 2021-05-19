@@ -19,7 +19,8 @@
 
 ---
 
-<small>Projeto Dev Finance$ Criado durante a Maratona Discover
+<small>Projeto Dev Finance$
+<br/>Criado durante a Maratona Discover
 Promovido pela [Rocketseat](https://rocketseat.com.br/)</small>
 <br/>
 <small>Instrutor <strong>Mayk Brito</strong></small>
